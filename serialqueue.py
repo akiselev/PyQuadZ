@@ -46,11 +46,11 @@ class SerialQueue(threading.Thread):
         # buffered: logs send buffered commands
         # worker: used in the main thread function run()
         # devices: used in functions that connect/disconnect with devices
-        self.log_flags = {'sleep': True,
+        self.log_flags = {'sleep': False,
                           'immediate_queue': False,
                           'buffered_queue': False,
-                          'immediate': True,
-                          'buffered': True,
+                          'immediate': False,
+                          'buffered': False,
                           'worker': False,
                           'devices': False}
         
