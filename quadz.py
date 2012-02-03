@@ -2,6 +2,7 @@ import serial
 import re
 import gexceptions
 from serialqueue import SerialQueue
+from probe import ProbeList
 
 class QuadZDevice():
     def __init__(self, com_port = 1):
@@ -460,8 +461,9 @@ class QuadZDevice():
         else:
             return self.buffered('SM')
     
-    def set_probe_speed(self):
-        pass
+    def set_probe_speed(self, a = '', b = '', c = '', d = ''):
+        return self.buffered('SO%s,%s,%s,%s' % (str(a), str(b), str(c), 
+                                                str(d)))
     
     def set_probe_z_height(self, a = '', b = '', c = '', d = ''):
         """
@@ -1012,3 +1014,13 @@ class QuadZDevice():
 
     def wait_for_buffered(self):
         self.queue.event_buffered.wait()
+        
+    def probes(self, *args):
+        mask = []
+        for probe in args:
+            if 4 < int(probe) < 1:
+                raise Exception('Probe # error')
+            mask.append(probe)
+        mask.sort()
+        print mask
+        return ProbeList(self, self.syringe, mask)
